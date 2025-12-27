@@ -1,0 +1,83 @@
+@import "tailwindcss";
+
+@theme {
+    --color-primary-50: var(--color-teal-50);
+    --color-primary-100: var(--color-teal-100);
+    --color-primary-200: var(--color-teal-200);
+    --color-primary-300: var(--color-teal-300);
+    --color-primary-400: var(--color-teal-400);
+    --color-primary-500: var(--color-teal-500);
+    --color-primary-600: #38833faa;
+    --color-primary-700: #433e27f5;
+    --color-primary-800: var(--color-teal-800);
+    --color-primary-900: var(--color-teal-900);
+    --color-primary-950: var(--color-teal-950);
+}
+
+@media print {
+    @page {
+        margin: 1cm;
+        size: auto;
+    }
+
+    /* Reset body and html */
+    body,
+    html {
+        height: auto !important;
+        overflow: visible !important;
+    }
+
+    /* Hide everything by default */
+    body * {
+        visibility: hidden;
+    }
+
+    /* Reset Main Container constraints */
+    main {
+        position: static !important;
+        overflow: visible !important;
+        height: auto !important;
+        width: auto !important;
+        max-width: none !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        display: block !important;
+    }
+
+    /* Make CV Container Visible and Layouted */
+    #cv-container,
+    #cv-container * {
+        visibility: visible;
+    }
+
+    #cv-container {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100% !important;
+        margin: 0 !important;
+        padding: 3rem !important;
+        /* Add some internal padding for paper aesthetic */
+        background: white;
+    }
+
+    /* Ensure Grid works (standard A4 is ~794px wide, satisfying sm: breakpoint) */
+    /* Force text colors to be black/dark for readability */
+    .text-slate-500,
+    .text-slate-600,
+    .text-slate-700 {
+        color: #334155 !important;
+        /* slate-700 */
+    }
+
+    .text-slate-900 {
+        color: #0f172a !important;
+        /* slate-900 */
+    }
+
+    /* Ensure links are readable but not blue/underlined if undesired */
+    a {
+        text-decoration: none !important;
+        color: inherit !important;
+    }
+}
