@@ -196,7 +196,7 @@ const Website = () => {
     {
       role: "Development Intern",
       org: "Recommendation Team, Kakao Corp.",
-      location: "Seongnam, South Korea (Worked Remotely due to pandemic)",
+      location: "Seongnam, South Korea",
       dates: "Jun 2021 - Aug 2021",
       desc: "Worked on projects for improving the recommendation system of KakaoTalk and Melon, focusing on algorithm implementation and evaluation.",
       image: "/photos/kakao_2021.png"
