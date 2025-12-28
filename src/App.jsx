@@ -165,7 +165,8 @@ const Website = () => {
 
   const awards = [
     { title: "Popular Choice Honorable Mention Award (Top 5%)", org: "CHI Interactivity", year: "2025" },
-    { title: "BK21 Best Paper Award", org: "Dept. of CSE, POSTECH", year: "2025" }
+    { title: "BK21 Best Paper Award", org: "Dept. of CSE, POSTECH", year: "2025" },
+    { title: "Undergraduate Group Research Program (3rd)", org: "POSTECH", year: "2021" },
   ];
 
   const service = [
