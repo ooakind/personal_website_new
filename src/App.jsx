@@ -194,11 +194,11 @@ const Website = () => {
 
   const internships = [
     {
-      role: "DevelopmentIntern",
+      role: "Development Intern",
       org: "Recommendation Team, Kakao Corp.",
-      location: "Seongnam, South Korea (Remote)",
+      location: "Seongnam, South Korea (Worked Remotely due to pandemic)",
       dates: "Jun 2021 - Aug 2021",
-      desc: "Conducted projects improving KakaoTalk and Melon recommendation systems, implemented recommendation algorithms, and conducted experimental analysis and optimization.",
+      desc: "Worked on projects for improving the recommendation system of KakaoTalk and Melon, focusing on algorithm implementation and evaluation.",
       image: "/photos/kakao_2021.png"
     },
     {
