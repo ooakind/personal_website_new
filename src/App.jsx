@@ -104,6 +104,7 @@ const Website = () => {
           title: "Toward Affective Empathy via Personalized Analogy Generation: A Case Study on Microaggression",
           authors: "Hyojin Ju, Jungeun Lee, Seungwon Yang, Jungseul Ok, Inseok Hwang",
           venue: "CHI 2025",
+          type: "paper",
           award: null,
           image: "/research_images/Toward Affective Empathy via Personalized Analogy Generation: A Case Study on Microaggression.png",
           links: {
@@ -115,6 +116,7 @@ const Website = () => {
           title: "Toward Affective Empathy via Personalized Analogy Generation: A Case Study on Microaggression",
           authors: "Hyojin Ju, Jungeun Lee, Seungwon Yang, Jungseul Ok, Inseok Hwang",
           venue: "CHI Interactivity '25",
+          type: "adjunct",
           award: "Popular Choice Honorable Mention Award (Top 5%)",
           image: "/research_images/Toward Affective Empathy via Personalized Analogy Generation: A Case Study on Microaggression (Interactivity).png",
           links: {
@@ -130,6 +132,7 @@ const Website = () => {
           title: "SleepGuru: Personalized Sleep Planning System for Real-life Actionability and Negotiability",
           authors: "Jungeun Lee, Sungnam Kim, Minki Cheon, Hyojin Ju, JaeEun Lee, Inseok Hwang",
           venue: "UIST 2022",
+          type: "paper",
           image: "/research_images/SleepGuru: Personalized Sleep Planning System for Real-life Actionability and Negotiability.png",
           links: {
             paper: "https://dl.acm.org/doi/10.1145/3526113.3545709",
@@ -140,6 +143,7 @@ const Website = () => {
           title: "Demonstrating SleepGuru: Personalized Sleep Planning System for Real-life Actionability and Negotiability",
           authors: "Jungeun Lee, Hyojin Ju, Sungnam Kim, Minki Cheon, JaeEun Lee, Inseok Hwang",
           venue: "UIST '22 Adjunct",
+          type: "adjunct",
           image: "/research_images/Demonstrating SleepGuru: Personalized Sleep Planning System for Real-life Actionability and Negotiability.png",
           links: {
             paper: "https://dl.acm.org/doi/10.1145/3526114.3558664"
@@ -351,6 +355,20 @@ const Website = () => {
     return parts.length > 0 ? parts : text;
   };
 
+  const HighlightAuthor = ({ authors }) => {
+    const parts = authors.split('Hyojin Ju');
+    return (
+      <>
+        {parts.map((part, i) => (
+          <React.Fragment key={i}>
+            {part}
+            {i < parts.length - 1 && <span className="font-semibold text-slate-900">Hyojin Ju</span>}
+          </React.Fragment>
+        ))}
+      </>
+    );
+  };
+
   return (
     <div className="min-h-screen bg-white font-sans text-slate-900 flex flex-col md:flex-row">
 
@@ -513,12 +531,7 @@ const Website = () => {
                             {pub.title}
                           </h4>
                           <div className="text-slate-600">
-                            {pub.authors.split('Hyojin Ju').map((part, i, arr) => (
-                              <React.Fragment key={i}>
-                                {part}
-                                {i < arr.length - 1 && <span className="font-bold text-slate-900">Hyojin Ju</span>}
-                              </React.Fragment>
-                            ))}
+                            <HighlightAuthor authors={pub.authors} />
                           </div>
                           <div className="flex flex-wrap items-center gap-x-3 text-sm mt-1">
                             <span className="font-medium italic text-slate-800">{pub.venue}</span>
@@ -757,16 +770,33 @@ const Website = () => {
                 </div>
               </div>
 
-              {/* Publications List (Simplified for CV) */}
               <div className="mb-10">
                 <h3 className="text-sm font-bold text-slate-900 uppercase tracking-wider border-b border-slate-200 pb-2 mb-4">Publications</h3>
-                <div className="space-y-4">
-                  {publications.flatMap(g => g.items).map((pub, i) => (
-                    <div key={i} className="text-sm text-slate-700 pl-4 relative">
-                      <span className="absolute left-0 top-1.5 w-1.5 h-1.5 bg-slate-300 rounded-full"></span>
-                      <span className="font-semibold text-slate-900">{pub.title}</span>. {pub.authors}. <span className="italic">{pub.venue}</span>.
-                    </div>
-                  ))}
+
+                {/* Papers */}
+                <div className="mb-6">
+                  <h4 className="font-bold text-slate-800 mb-3 text-sm">Full Papers</h4>
+                  <div className="space-y-4">
+                    {publications.flatMap(g => g.items).filter(p => p.type === 'paper').map((pub, i) => (
+                      <div key={i} className="text-sm text-slate-700 pl-4 relative">
+                        <span className="absolute left-0 top-1.5 w-1.5 h-1.5 bg-slate-300 rounded-full"></span>
+                        <span className="font-semibold text-slate-900">{pub.title}</span>. <HighlightAuthor authors={pub.authors} />. <span className="italic">{pub.venue}</span>.
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Demos & Posters */}
+                <div>
+                  <h4 className="font-bold text-slate-800 mb-3 text-sm">Posters & Demos</h4>
+                  <div className="space-y-4">
+                    {publications.flatMap(g => g.items).filter(p => p.type === 'adjunct').map((pub, i) => (
+                      <div key={i} className="text-sm text-slate-700 pl-4 relative">
+                        <span className="absolute left-0 top-1.5 w-1.5 h-1.5 bg-slate-300 rounded-full"></span>
+                        <span className="font-semibold text-slate-900">{pub.title}</span>. <HighlightAuthor authors={pub.authors} />. <span className="italic">{pub.venue}</span>.
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
 
@@ -833,37 +863,6 @@ const Website = () => {
         )
         }
 
-        {/* TEACHING */}
-        {
-          activeSection === 'teaching' && (
-            <div className="animate-fade-in">
-              <h2 className="text-3xl font-bold text-slate-900 mb-8 border-b border-slate-100 pb-4">Teaching</h2>
-              <div className="overflow-x-auto">
-                <table className="w-full text-left border-collapse">
-                  <thead>
-                    <tr className="border-b-2 border-slate-100">
-                      <th className="py-3 pr-4 font-semibold text-slate-800">Term</th>
-                      <th className="py-3 pr-4 font-semibold text-slate-800">Course</th>
-                      <th className="py-3 pr-4 font-semibold text-slate-800">Role</th>
-                      <th className="py-3 font-semibold text-slate-800">Institution</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-slate-50 text-slate-600">
-                    {teaching.map((t, i) => (
-                      <tr key={i} className="hover:bg-slate-50/50">
-                        <td className="py-4 pr-4 font-mono text-sm text-slate-500">{t.term}</td>
-                        <td className="py-4 pr-4 font-medium text-slate-900">{t.course}</td>
-                        <td className="py-4 pr-4">{t.role}</td>
-                        <td className="py-4 text-sm">{t.uni}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          )
-        }
-
         {/* MISC */}
         {
           activeSection === 'misc' && (
@@ -906,7 +905,7 @@ const Website = () => {
                   {teaching.map((t, i) => (
                     <li key={i} className="bg-slate-50 rounded-lg p-4 border border-slate-100">
                       <div className="flex justify-between items-start mb-2">
-                        <span className="text-xs font-bold tracking-wide text-primary-700 bg-primary-50 px-2 py-1 rounded-md uppercase">
+                        <span className="text-xs font-bold tracking-wide text-primary-700 bg-primary-500 px-2 py-1 rounded-md uppercase">
                           {t.term}
                         </span>
                         <span className="text-xs text-slate-400">{t.uni}</span>
