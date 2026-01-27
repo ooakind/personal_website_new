@@ -720,7 +720,7 @@ const Website = () => {
             <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center border-b border-slate-200 pb-6 mb-8 gap-4 print:hidden">
               <div>
                 <h2 className="text-3xl font-bold text-slate-900">Curriculum Vitae</h2>
-                <p className="text-slate-500 mt-1">Last updated: 2025.12.27</p>
+                <p className="text-slate-500 mt-1">Last updated: 2026.1.27</p>
               </div>
               <div className="flex gap-3">
                 {/* <button
