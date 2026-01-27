@@ -80,6 +80,7 @@ const Website = () => {
   // };
 
   const news = [
+    { date: "Jan 2026", text: "Won the POSTECHIAN Fellowship (Emerging Scholars Track), recognizing early-stage PhD students with strong potential." },
     { date: "Dec 2025", text: "'EmoSync' won BK21 Best Paper Award!" },
     { date: "June 2025", text: "Featured in a [live radio interview on KBS Pohang](https://program.kbs.co.kr/1radio/local/morningpoh/pc/board.html?smenu=154e2b&bbs_loc=R2006-0309-03-121830,read,,2760,1918681) regarding our EmoSync research." },
     { date: "Apr 2025", text: "'EmoSync' won Popular Choice Honorable Mention Award (Top 5%) at CHI '25 Interactivity!" },
@@ -164,6 +165,7 @@ const Website = () => {
   ];
 
   const awards = [
+    { title: "POSTECHIAN Fellowship (Emerging Scholars track)", org: "Dept. of CSE, POSTECH", year: "2026" },
     { title: "Popular Choice Honorable Mention Award (Top 5%)", org: "CHI Interactivity", year: "2025" },
     { title: "BK21 Best Paper Award", org: "Dept. of CSE, POSTECH", year: "2025" },
     { title: "Undergraduate Group Research Program (3rd)", org: "POSTECH", year: "2021" },
@@ -483,7 +485,7 @@ const Website = () => {
                 {news.map((item, i) => {
                   let Icon = Newspaper;
                   if (item.text.toLowerCase().includes('paper')) Icon = FileText;
-                  if (item.text.toLowerCase().includes('award')) Icon = Award;
+                  if (item.text.toLowerCase().includes('award') || item.text.toLowerCase().includes('fellowship')) Icon = Award;
                   if (item.text.toLowerCase().includes('started')) Icon = Flag;
 
                   return (
