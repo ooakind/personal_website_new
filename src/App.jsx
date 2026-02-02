@@ -80,7 +80,7 @@ const Website = () => {
   // };
 
   const news = [
-    { date: "Jan 2026", text: "Won the POSTECHIAN Fellowship (Emerging Scholars Track), recognizing early-stage PhD students with strong potential." },
+    { date: "Jan 2026", text: "Won POSTECHIAN Fellowship (Emerging Scholars Track), recognizing early-stage PhD students with strong potential!" },
     { date: "Dec 2025", text: "'EmoSync' won BK21 Best Paper Award!" },
     { date: "June 2025", text: "Featured in a [live radio interview on KBS Pohang](https://program.kbs.co.kr/1radio/local/morningpoh/pc/board.html?smenu=154e2b&bbs_loc=R2006-0309-03-121830,read,,2760,1918681) regarding our EmoSync research." },
     { date: "Apr 2025", text: "'EmoSync' won Popular Choice Honorable Mention Award (Top 5%) at CHI '25 Interactivity!" },
