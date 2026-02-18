@@ -81,7 +81,7 @@ const Website = () => {
 
   const news = [
     { date: "Jan 2026", text: "Won POSTECHIAN Fellowship (Emerging Scholars Track), recognizing early-stage PhD students with strong potential!" },
-    { date: "Dec 2025", text: "'EmoSync' won BK21 Best Paper Award!" },
+    { date: "Dec 2025", text: "'EmoSync' won BK21 CSE Best Paper Award!" },
     { date: "June 2025", text: "Featured in a [live radio interview on KBS Pohang](https://program.kbs.co.kr/1radio/local/morningpoh/pc/board.html?smenu=154e2b&bbs_loc=R2006-0309-03-121830,read,,2760,1918681) regarding our EmoSync research." },
     { date: "Apr 2025", text: "'EmoSync' won Popular Choice Honorable Mention Award (Top 5%) at CHI '25 Interactivity!" },
     { date: "Jan 2025", text: "My first, first-authored paper ['Toward Affective Empathy via Personalized Analogy Generation: A Case Study on Microaggression'](https://dl.acm.org/doi/10.1145/3706598.3714122) (a.k.a. 'EmoSync') accepted to CHI 2025!" }
@@ -89,7 +89,7 @@ const Website = () => {
 
   const experience = [
     {
-      role: "Integrated MS/Ph.D. Program (Advisor: Prof. Inseok Hwang)",
+      role: "Integrated MS/Ph.D. Program (Advisor: [Prof. Inseok Hwang](https://www.inseokhwang.com/))",
       org: "Human-centered Intelligent Systems Lab (HIS Lab), POSTECH",
       location: "Pohang, South Korea",
       dates: "Feb 2023 - Present",
@@ -167,12 +167,12 @@ const Website = () => {
   const awards = [
     { title: "POSTECHIAN Fellowship (Emerging Scholars track)", org: "Dept. of CSE, POSTECH", year: "2026" },
     { title: "Popular Choice Honorable Mention Award (Top 5%)", org: "CHI Interactivity", year: "2025" },
-    { title: "BK21 Best Paper Award", org: "Dept. of CSE, POSTECH", year: "2025" },
+    { title: "CSE Best Paper Award", org: "Dept. of CSE, POSTECH", year: "2025" },
     { title: "Undergraduate Group Research Program (3rd)", org: "POSTECH", year: "2021" },
   ];
 
   const service = [
-    "External Reviewer, CHI 2026 Papers",
+    "External Reviewer, CHI 2026 Papers, Posters",
     "External Reviewer, CHI 2025 Case Studies",
     "External Reviewer, IMWUT 2024 (November)"
   ];
@@ -288,12 +288,12 @@ const Website = () => {
                 {title}
               </h3>
               <div className="font-medium mt-1 text-primary-700">
-                {subtitle}
+                {parseLinks(subtitle)}
               </div>
             </div>
             {desc && (
               <p className="leading-relaxed text-sm mt-2 text-slate-700">
-                {desc}
+                {parseLinks(desc)}
               </p>
             )}
           </div>
@@ -334,7 +334,7 @@ const Website = () => {
   );
 
   // Helper to parse [text](url) links
-  const parseLinks = (text) => {
+  const parseLinks = (text, noUrl = false) => {
     const regex = /\[([^\]]+)\]\(([^)]+)\)/g;
     const parts = [];
     let lastIndex = 0;
@@ -344,17 +344,30 @@ const Website = () => {
       if (match.index > lastIndex) {
         parts.push(text.substring(lastIndex, match.index));
       }
-      parts.push(
-        <a
-          key={lastIndex}
-          href={match[2]}
-          target="_blank"
-          rel="noreferrer"
-          className="text-primary-600 hover:underline font-medium"
-        >
-          {match[1]}
-        </a>
-      );
+      if (noUrl == true) {
+          parts.push(
+          <span
+            key={lastIndex}
+            target="_blank"
+            rel="noreferrer"
+          >
+            {match[1]}
+          </span>
+        );
+      } else {
+          parts.push(
+          <a
+            key={lastIndex}
+            href={match[2]}
+            target="_blank"
+            rel="noreferrer"
+            className="text-primary-600 hover:underline font-medium"
+          >
+            {match[1]}
+          </a>
+        );
+      }
+      
       lastIndex = regex.lastIndex;
     }
 
@@ -771,7 +784,7 @@ const Website = () => {
                   {experience.map((job, i) => (
                     <div key={i} className="grid sm:grid-cols-[1fr_120px] gap-1">
                       <div>
-                        <div className="font-bold text-slate-900">{job.role}</div>
+                        <div className="font-bold text-slate-900">{parseLinks(job.role, true)}</div>
                         <div className="text-slate-700 text-sm italic mb-1">{job.org}, {job.location}</div>
                       </div>
                       <div className="text-slate-500 text-sm font-mono text-right">{job.dates}</div>
