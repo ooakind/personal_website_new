@@ -33,6 +33,29 @@ import {
 const Website = () => {
   const [activeSection, setActiveSection] = useState('home');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isExportingCv, setIsExportingCv] = useState(false);
+  const [cvExportError, setCvExportError] = useState('');
+  const cvExportInProgress = useRef(false);
+
+  const downloadCv = async () => {
+    if (cvExportInProgress.current) return;
+    cvExportInProgress.current = true;
+    setIsExportingCv(true);
+    setCvExportError('');
+    try {
+      const container = document.getElementById('cv-container');
+      if (!container) throw new Error('CV content is unavailable.');
+      const { createCvPdf } = await import('./cvPdf');
+      const pdf = await createCvPdf(container);
+      await pdf.save('Hyojin_Ju_CV.pdf', { returnPromise: true });
+    } catch (error) {
+      console.error('CV PDF export failed:', error);
+      setCvExportError('Could not create the PDF. Please try again.');
+    } finally {
+      cvExportInProgress.current = false;
+      setIsExportingCv(false);
+    }
+  };
 
   // --- Real Data (Hyojin Ju) ---
 
@@ -80,6 +103,7 @@ const Website = () => {
   // };
 
   const news = [
+    { date: "Oct 2026", text: "I’ll be at UIST 2026 presenting our demo, [“Step into My Agent’s Shoes: Augmenting Processual Experiences via Interactive Narrative Game Generation”](https://www.youtube.com/watch?v=vYZpalVKnFg)! Thrilled to discuss how we can reclaim the experience of the process in a playful, interactive way when we delegate tasks to AI agents." },
     { date: "Jan 2026", text: "Won POSTECHIAN Fellowship (Emerging Scholars Track), recognizing early-stage PhD students with strong potential!" },
     { date: "Dec 2025", text: "'EmoSync' won BK21 CSE Best Paper Award!" },
     { date: "June 2025", text: "Featured in a [live radio interview on KBS Pohang](https://program.kbs.co.kr/1radio/local/morningpoh/pc/board.html?smenu=154e2b&bbs_loc=R2006-0309-03-121830,read,,2760,1918681) regarding our EmoSync research." },
@@ -98,6 +122,23 @@ const Website = () => {
   ];
 
   const publications = [
+    {
+      year: 2026,
+      items: [
+        {
+          title: "Step into My Agent’s Shoes: Augmenting Processual Experiences via Interactive Narrative Game Generation",
+          authors: "{Hyojin Ju, Jaewoong Jang}, Inseok Hwang",
+          venue: "UIST 2026 (Demo)",
+          type: "adjunct",
+          award: null,
+          image: "/research_images/Step into My Agent’s Shoes: Augmenting Processual Experiences via Interactive Narrative Game Generation.png",
+          links: {
+            paper: "https://doi.org/10.1145/3830397.3842463",
+            video: "https://www.youtube.com/watch?v=vYZpalVKnFg"
+          }
+        },
+      ]
+    },
     {
       year: 2025,
       items: [
@@ -143,7 +184,7 @@ const Website = () => {
         {
           title: "Demonstrating SleepGuru: Personalized Sleep Planning System for Real-life Actionability and Negotiability",
           authors: "Jungeun Lee, Hyojin Ju, Sungnam Kim, Minki Cheon, JaeEun Lee, Inseok Hwang",
-          venue: "UIST '22 Adjunct",
+          venue: "UIST 2022 (Demo)",
           type: "adjunct",
           image: "/research_images/Demonstrating SleepGuru: Personalized Sleep Planning System for Real-life Actionability and Negotiability.png",
           links: {
@@ -157,6 +198,7 @@ const Website = () => {
   const teaching = [
     { course: "Mobile Ubiquitous Computing (CSED404)", role: "Teaching Assistant", term: "2024-2", uni: "Dept. of CSE, POSTECH" },
     { course: "Human-Computer Interaction (CSED402)", role: "Teaching Assistant", term: "2025-2", uni: "Dept. of CSE, POSTECH" },
+    { course: "Research Topics and Methods in HCI (CSED700G)", role: "Teaching Assistant", term: "2026-2", uni: "Dept. of CSE, POSTECH" }
   ];
 
   const education = [
@@ -227,20 +269,17 @@ const Website = () => {
     {
       title: "Electronic device and method for providing similar situation for emotional empathy using artificial intelligence model",
       items: [
-        "Korea Patent Pending. Application No. 10-2025-0107924 (Application Date: Aug. 6, 2025)"
+        "Korea Patent Pending. Application No. 10-2025-0107924 (Application Date: Aug. 6, 2025)",
+        "U.S. Patent Pending. Application No. 19/725,079 (Application Date: Jun. 30, 2026)"
       ]
     },
     {
       title: "Personalized Sleep Planning System Considering Individual Dynamic Constraints and Sleep Schedule Creating Method Using Same",
       items: [
+        "Korea Patent No. 10-2839271. (Issue Date: Jul. 23, 2025; Application Date: Jun. 28, 2022)",
         "U.S. Patent Pending. Application No. 17/886446 (Application Date: Aug. 11, 2022)"
       ]
     },
-    {
-      title: "Personalized Sleep Planning System Considering Individual Dynamic Constraints and Sleep Schedules Creation Method Therefore",
-      items: [
-        "Korea Patent No. 10-2839271. (Issue Date: Jul. 23, 2025; Application Date: Jun. 28, 2022)"]
-    }
   ];
 
   // Dummy data. Not used in the website yet.
@@ -377,6 +416,14 @@ const Website = () => {
 
     return parts.length > 0 ? parts : text;
   };
+
+  const EqualContributionNote = ({ authors }) => (
+    /\{[^{}]+\}/.test(authors) ? (
+      <div className="text-xs text-slate-500">
+        {'{}: equal contributions'}
+      </div>
+    ) : null
+  );
 
   const HighlightAuthor = ({ authors }) => {
     const parts = authors.split('Hyojin Ju');
@@ -556,6 +603,7 @@ const Website = () => {
                           <div className="text-slate-600">
                             <HighlightAuthor authors={pub.authors} />
                           </div>
+                          <EqualContributionNote authors={pub.authors} />
                           <div className="flex flex-wrap items-center gap-x-3 text-sm mt-1">
                             <span className="font-medium italic text-slate-800">{pub.venue}</span>
                             {pub.award && (
@@ -733,20 +781,24 @@ const Website = () => {
             <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center border-b border-slate-200 pb-6 mb-8 gap-4 print:hidden">
               <div>
                 <h2 className="text-3xl font-bold text-slate-900">Curriculum Vitae</h2>
-                <p className="text-slate-500 mt-1">Last updated: 2026.1.27</p>
+                <p className="text-slate-500 mt-1">Last updated: 2026.10.22</p>
               </div>
               <div className="flex gap-3">
-                {/* <button
-                  onClick={() => window.print()}
-                  className="flex items-center space-x-2 text-sm font-medium text-white bg-slate-900 hover:bg-primary-600 px-4 py-2.5 rounded-lg transition-colors shadow-sm"
+                <button
+                  onClick={downloadCv}
+                  disabled={isExportingCv}
+                  aria-busy={isExportingCv}
+                  className="flex items-center space-x-2 text-sm font-medium text-white bg-slate-900 hover:bg-primary-600 px-4 py-2.5 rounded-lg transition-colors shadow-sm disabled:opacity-60 disabled:cursor-wait"
                 >
-                  <Download size={16} /> <span>Download PDF</span>
-                </button> */}
+                  {isExportingCv ? <Loader2 size={16} className="animate-spin" /> : <Download size={16} />}
+                  <span>{isExportingCv ? 'Creating PDF…' : 'Download PDF'}</span>
+                </button>
               </div>
             </div>
 
 
 
+            {cvExportError && <p role="alert" className="text-sm text-red-600 print:hidden">{cvExportError}</p>}
             <div id="cv-container" className="bg-white rounded-xl shadow-sm border border-slate-100 p-8 md:p-12 print:shadow-none print:border-none print:p-0">
 
               {/* Header inside CV paper */}
@@ -804,6 +856,7 @@ const Website = () => {
                       <div key={i} className="text-sm text-slate-700 pl-4 relative">
                         <span className="absolute left-0 top-1.5 w-1.5 h-1.5 bg-slate-300 rounded-full"></span>
                         <span className="font-semibold text-slate-900">{pub.title}</span>. <HighlightAuthor authors={pub.authors} />. <span className="italic">{pub.venue}</span>.
+                        <EqualContributionNote authors={pub.authors} />
                       </div>
                     ))}
                   </div>
@@ -817,6 +870,7 @@ const Website = () => {
                       <div key={i} className="text-sm text-slate-700 pl-4 relative">
                         <span className="absolute left-0 top-1.5 w-1.5 h-1.5 bg-slate-300 rounded-full"></span>
                         <span className="font-semibold text-slate-900">{pub.title}</span>. <HighlightAuthor authors={pub.authors} />. <span className="italic">{pub.venue}</span>.
+                        <EqualContributionNote authors={pub.authors} />
                       </div>
                     ))}
                   </div>
