@@ -1,17 +1,84 @@
 @import "tailwindcss";
 
+/* ------------------------------------------------------------------
+   Design tokens — "Paper & Objects"
+   Text sits flat on white paper. Only images (and a few small marks)
+   carry color or elevation.
+   ------------------------------------------------------------------ */
 @theme {
-    --color-primary-50: var(--color-teal-50);
-    --color-primary-100: var(--color-teal-100);
-    --color-primary-200: var(--color-teal-200);
-    --color-primary-300: var(--color-teal-300);
-    --color-primary-400: var(--color-teal-400);
-    --color-primary-500: #8fb693aa;
-    --color-primary-600: #38833faa;
-    --color-primary-700: #433e27f5;
-    --color-primary-800: var(--color-teal-800);
-    --color-primary-900: var(--color-teal-900);
-    --color-primary-950: var(--color-teal-950);
+    /* Palette: "Midnight & Tangerine".
+       accent = navy-blue, the base color for headings, links, icons, dots and dates.
+       pop    = tangerine, used only at a few sparse points (active-nav mark, question
+                quote marks, the newest news dot, video play badge, award chip). */
+    --color-accent-50: #eef4f9;
+    --color-accent-100: #dbe7f1;
+    --color-accent-200: #b9cfe0;
+    --color-accent-300: #8db1cb;
+    --color-accent-400: #5f8fb0;
+    --color-accent-500: #3d7499;
+    --color-accent-600: #24608a;
+    --color-accent-700: #1b4a6b;
+    --color-accent-800: #123753;
+    --color-accent-900: #0a2342;
+
+    --color-pop: #ff6a00;
+    --color-pop-strong: #c2410c;
+
+    /* Neutrals: Tailwind's slate, tinted toward the navy so text and rules sit in the same family. */
+    --color-slate-100: #eef1f6;
+    --color-slate-200: #e3e7ee;
+    --color-slate-300: #cbd3df;
+    --color-slate-400: #97a3b6;
+    --color-slate-500: #6b7890;
+    --color-slate-600: #4f5d78;
+    --color-slate-700: #3a4860;
+    --color-slate-800: #1e2d47;
+    --color-slate-900: #0a2342;
+
+    /* The one elevation treatment shared by every image on the site. */
+    --shadow-obj: 0 1px 2px rgb(15 23 42 / 0.06), 0 12px 28px -12px rgb(15 23 42 / 0.28);
+    --shadow-obj-hover: 0 2px 4px rgb(15 23 42 / 0.06), 0 20px 44px -14px rgb(15 23 42 / 0.34);
+
+    --animate-fade-in: fade-in 0.45s ease both;
+
+    @keyframes fade-in {
+        from { opacity: 0; transform: translateY(6px); }
+        to { opacity: 1; transform: none; }
+    }
+}
+
+@layer components {
+    /* An "object": a picture lifted off the paper. */
+    .obj {
+        @apply relative block overflow-hidden rounded-xl bg-slate-100 shadow-obj ring-1 ring-slate-900/8;
+        transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+    .obj:hover {
+        @apply shadow-obj-hover;
+        transform: translateY(-3px);
+    }
+    .obj > img {
+        @apply block h-full w-full object-cover;
+    }
+
+    /* A theme tile whose object hides more works behind it. */
+    .obj-stack {
+        @apply relative z-0;
+    }
+    .obj-stack::before,
+    .obj-stack::after {
+        content: "";
+        @apply pointer-events-none absolute inset-0 -z-10 rounded-xl bg-white ring-1 ring-slate-900/8;
+        box-shadow: 0 6px 16px -8px rgb(15 23 42 / 0.25);
+    }
+    .obj-stack::before { transform: translate(6px, 6px); }
+    .obj-stack::after { transform: translate(12px, 12px); opacity: 0.6; }
+    .obj-stack[data-count="2"]::after { display: none; }
+
+    @media (prefers-reduced-motion: reduce) {
+        .obj, .obj:hover { transition: none; transform: none; }
+        .animate-fade-in { animation: none; }
+    }
 }
 
 @media print {
@@ -20,19 +87,16 @@
         size: auto;
     }
 
-    /* Reset body and html */
     body,
     html {
         height: auto !important;
         overflow: visible !important;
     }
 
-    /* Hide everything by default */
     body * {
         visibility: hidden;
     }
 
-    /* Reset Main Container constraints */
     main {
         position: static !important;
         overflow: visible !important;
@@ -44,7 +108,6 @@
         display: block !important;
     }
 
-    /* Make CV Container Visible and Layouted */
     #cv-container,
     #cv-container * {
         visibility: visible;
@@ -57,25 +120,19 @@
         width: 100% !important;
         margin: 0 !important;
         padding: 3rem !important;
-        /* Add some internal padding for paper aesthetic */
         background: white;
     }
 
-    /* Ensure Grid works (standard A4 is ~794px wide, satisfying sm: breakpoint) */
-    /* Force text colors to be black/dark for readability */
     .text-slate-500,
     .text-slate-600,
     .text-slate-700 {
         color: #334155 !important;
-        /* slate-700 */
     }
 
     .text-slate-900 {
         color: #0f172a !important;
-        /* slate-900 */
     }
 
-    /* Ensure links are readable but not blue/underlined if undesired */
     a {
         text-decoration: none !important;
         color: inherit !important;
