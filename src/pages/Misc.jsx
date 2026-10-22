@@ -1,6 +1,6 @@
 import { FileText, BookOpen, Users, Newspaper, ExternalLink } from 'lucide-react';
 import { patents, teaching, service, mediaCoverage } from '../data.jsx';
-import { PageTitle, Section, TextLink, DateLabel, EmptyNote } from '../components/ui.jsx';
+import { PageTitle, Section, TextLink, DateLabel, EmptyNote, Media } from '../components/ui.jsx';
 
 export default function Misc() {
   return (
@@ -70,17 +70,22 @@ export default function Misc() {
       <Section icon={Newspaper} id="media-heading" title="Media Coverage">
         <ul className="divide-y divide-slate-100">
           {mediaCoverage.map((item, i) => (
-            <li key={i} className="py-4 first:pt-1 last:pb-0">
-              <h4 className="text-[0.98rem] font-semibold leading-snug text-slate-900">
-                <TextLink href={item.link} className="text-slate-900 decoration-slate-300">
-                  {item.title}<ExternalLink size={12} aria-hidden="true" className="ml-1 inline-block align-baseline" />
-                </TextLink>
-              </h4>
-              <div className="mt-2 flex flex-wrap items-center gap-2 text-xs text-slate-500">
-                <span className="font-medium text-slate-700">{item.source}</span>
-                <span aria-hidden="true" className="h-1 w-1 rounded-full bg-slate-300" />
-                <DateLabel>{item.date}</DateLabel>
+            <li key={i} className={`grid gap-x-6 gap-y-3 py-4 first:pt-1 last:pb-0 ${item.image ? 'md:grid-cols-[minmax(0,1fr)_15rem]' : ''}`}>
+              <div className="min-w-0">
+                <h4 className="text-[0.98rem] font-semibold leading-snug text-slate-900">
+                  <TextLink href={item.link} className="text-slate-900 decoration-slate-300">
+                    {item.title}<ExternalLink size={12} aria-hidden="true" className="ml-1 inline-block align-baseline" />
+                  </TextLink>
+                </h4>
+                <div className="mt-2 flex flex-wrap items-center gap-2 text-xs text-slate-500">
+                  <span className="font-medium text-slate-700">{item.source}</span>
+                  <span aria-hidden="true" className="h-1 w-1 rounded-full bg-slate-300" />
+                  <DateLabel>{item.date}</DateLabel>
+                </div>
               </div>
+              {item.image && (
+                <Media src={item.image} alt="" href={item.link} video={item.video} className="aspect-[3/2] w-full max-w-[22rem] md:max-w-none" />
+              )}
             </li>
           ))}
           {mediaCoverage.length === 0 && <li><EmptyNote>No information posted yet.</EmptyNote></li>}
