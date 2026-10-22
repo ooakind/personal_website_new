@@ -19,7 +19,7 @@ const SocialIcon = ({ href, icon, label }) => (
   <a
     href={href}
     aria-label={label}
-    className="rounded-lg p-1.5 text-slate-500 transition-colors hover:text-accent-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-600"
+    className="rounded-lg p-1.5 text-pop transition-colors hover:text-pop-strong focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-600"
     target="_blank"
     rel="noreferrer"
   >

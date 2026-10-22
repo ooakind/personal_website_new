@@ -8,13 +8,7 @@ const ThemeTile = ({ theme, onOpenPublication }) => {
   return (
     <div className="grid content-start grid-cols-[8rem_minmax(0,1fr)] gap-x-4 gap-y-1.5 sm:grid-cols-1 sm:gap-y-2.5">
       <div className={`mr-3 mb-3 max-sm:row-span-3 max-sm:self-start ${stacked ? 'obj-stack' : ''}`} data-count={stacked ? Math.min(pubs.length, 3) : undefined}>
-        <Media src={theme.image} alt="" className="aspect-[4/3]">
-          {stacked && (
-            <span className="absolute right-2 top-2 rounded-full bg-white/95 px-1.5 py-0.5 font-mono text-[10.5px] text-slate-600 ring-1 ring-slate-900/8 max-sm:hidden">
-              {pubs.length} works
-            </span>
-          )}
-        </Media>
+        <Media src={theme.image} alt="" className="aspect-[4/3]" />
       </div>
       <h4 className="text-[0.95rem] font-semibold leading-snug text-slate-900">{theme.title}</h4>
       <p className="text-[13px] leading-relaxed text-slate-600">{theme.desc}</p>
@@ -59,8 +53,10 @@ export default function About({ onOpenPublication }) {
         <PageTitle>About Me</PageTitle>
         <div className={profile.photo ? 'grid items-start gap-x-9 gap-y-4 md:grid-cols-[minmax(0,1fr)_14rem]' : ''}>
           <div className="max-w-[68ch] space-y-4">
-            <p className="text-[1.4rem] font-bold leading-snug tracking-tight text-slate-900">
-              <span className="text-pop">“</span>{profile.question}<span className="text-pop">”</span>
+            <p className="relative pl-7 text-[1.4rem] font-bold leading-snug tracking-tight text-slate-900 sm:pl-9">
+              <span aria-hidden="true" className="absolute -top-2 left-0 select-none font-serif text-[3.4rem] leading-none text-pop">“</span>
+              {profile.question}
+              <span aria-hidden="true" className="ml-1 font-serif text-[1.6em] leading-none text-pop align-[-0.3em]">”</span>
             </p>
             <div className="space-y-4 text-[1.02rem] font-light leading-relaxed text-slate-700 [&_strong]:font-semibold [&_strong]:text-slate-900">
               {profile.bio}
