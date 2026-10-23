@@ -27,17 +27,32 @@ const SocialIcon = ({ href, icon, label }) => (
   </a>
 );
 
+const SECTION_IDS = NAV.map(n => n.id);
+const sectionFromHash = () => {
+  const id = window.location.hash.replace(/^#/, '');
+  return SECTION_IDS.includes(id) ? id : 'home';
+};
+const hashForSection = (id) => (id === 'home' ? window.location.pathname : `#${id}`);
+
 export default function App() {
-  const [activeSection, setActiveSection] = useState('home');
+  const [activeSection, setActiveSection] = useState(sectionFromHash);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const mainRef = useRef(null);
   const pendingAnchor = useRef(null);
 
   const goTo = (id, anchorId = null) => {
     pendingAnchor.current = anchorId;
+    if (id !== activeSection) window.history.pushState(null, '', hashForSection(id));
     setActiveSection(id);
     setIsMobileMenuOpen(false);
   };
+
+  // Browser back/forward: follow the URL hash.
+  useEffect(() => {
+    const onPop = () => setActiveSection(sectionFromHash());
+    window.addEventListener('popstate', onPop);
+    return () => window.removeEventListener('popstate', onPop);
+  }, []);
 
   // After a section switch, either scroll to a requested anchor or back to the top.
   useEffect(() => {
