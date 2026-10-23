@@ -114,7 +114,7 @@ export default function App() {
           </nav>
 
           <div className="mt-8 text-center text-xs text-slate-500">
-            &copy; {new Date().getFullYear()} {profile.name}
+            &copy; 2025 {profile.name}
           </div>
         </div>
       </aside>
