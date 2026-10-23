@@ -163,15 +163,17 @@ export const publications = [
 // Research themes shown on About. Each theme has an objective `title`, a personal
 // `comment` (the "why I care" that does not fit in a paper), a representative `image`,
 // and any number of `publications`, each a publication id plus a one-line `note`
-// describing that work from the theme's point of view.
+// describing that work from the theme's point of view. An entry with a `label`
+// instead of an `id` (e.g. "In progress") is shown as a non-clickable hint.
 export const themes = [
   {
     title: "Simulating hyper-personalized social experiences",
-    comment: "A social situation has one structure, but it never lands the same way on two people. I want AI that can rebuild an experience in the shape it would take for you, so you can feel what someone else felt, or meet a reaction as real as the person's own.",
+    comment: "A social situation has one structure, but it never lands the same way on two people. What if AI could rebuild an experience in the shape it would take for you, so you could feel what someone else felt, or meet a reaction as real as the person's own?",
     image: "/research_images/emosync.jpg",
     publications: [
       { id: "emosync-chi25", note: "EmoSync: a personalized analogy that lets you feel a microaggression the way its target did, as a route to affective empathy." },
-      { id: "emosync-interactivity25", note: "A hands-on EmoSync demo at CHI Interactivity. Popular Choice Honorable Mention (Top 5%)." }
+      { id: "emosync-interactivity25", note: "A hands-on EmoSync demo at CHI Interactivity. Popular Choice Honorable Mention (Top 5%)." },
+      { label: "In progress", note: "What if a generated social experience showed up as an event in your own lifeworld, somewhere familiar, among people you know? Would the reaction it draws out be the real one?" }
     ]
   },
   {

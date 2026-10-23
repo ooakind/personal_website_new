@@ -4,8 +4,8 @@ import { PageTitle, Section, Media, DateChip, parseLinks } from '../components/u
 
 const ThemeTile = ({ theme, onOpenPublication }) => {
   const pubs = theme.publications
-    .map(ref => ({ ...ref, pub: publicationById(ref.id) }))
-    .filter(ref => ref.pub);
+    .map(ref => ({ ...ref, pub: ref.id ? publicationById(ref.id) : null }))
+    .filter(ref => ref.pub || ref.label);
   const stacked = pubs.length > 1;
   return (
     <div className="grid gap-x-6 gap-y-3 border-t border-slate-100 py-6 first:border-t-0 first:pt-1 md:grid-cols-[15rem_minmax(0,1fr)]">
@@ -16,16 +16,23 @@ const ThemeTile = ({ theme, onOpenPublication }) => {
         <h4 className="text-[1.03rem] font-semibold leading-snug text-slate-900">{theme.title}</h4>
         <p className="text-[0.92rem] leading-relaxed text-slate-700">{theme.comment}</p>
         <ul className="space-y-2.5 border-t border-slate-100 pt-3">
-          {pubs.map(({ id, note, pub }) => (
-            <li key={id}>
-              <button
-                type="button"
-                onClick={() => onOpenPublication(id)}
-                className="block w-full rounded-sm text-left text-sm leading-relaxed text-slate-600 transition-colors hover:text-accent-700 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent-600"
-              >
-                <span className="mr-2 font-mono text-[11px] text-accent-600">{pub.venue}</span>
-                <span>{note || pub.short || pub.title}</span>
-              </button>
+          {pubs.map(({ id, label, note, pub }, i) => (
+            <li key={id || `${label}-${i}`}>
+              {pub ? (
+                <button
+                  type="button"
+                  onClick={() => onOpenPublication(id)}
+                  className="block w-full rounded-sm text-left text-sm leading-relaxed text-slate-600 transition-colors hover:text-accent-700 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent-600"
+                >
+                  <span className="mr-2 font-mono text-[11px] text-accent-600">{pub.venue}</span>
+                  <span>{note || pub.short || pub.title}</span>
+                </button>
+              ) : (
+                <p className="text-sm leading-relaxed text-slate-500">
+                  <span className="mr-2 font-mono text-[11px] font-semibold text-pop-strong">{label}</span>
+                  <span className="italic">{note}</span>
+                </p>
+              )}
             </li>
           ))}
         </ul>
