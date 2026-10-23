@@ -3,29 +3,33 @@ import { profile, news, themes, publicationById } from '../data.jsx';
 import { PageTitle, Section, Media, DateChip, parseLinks } from '../components/ui.jsx';
 
 const ThemeTile = ({ theme, onOpenPublication }) => {
-  const pubs = theme.publications.map(publicationById).filter(Boolean);
+  const pubs = theme.publications
+    .map(ref => ({ ...ref, pub: publicationById(ref.id) }))
+    .filter(ref => ref.pub);
   const stacked = pubs.length > 1;
   return (
-    <div className="grid content-start grid-cols-[8rem_minmax(0,1fr)] gap-x-4 gap-y-1.5 sm:grid-cols-1 sm:gap-y-2.5">
-      <div className={`mr-3 mb-3 max-sm:row-span-3 max-sm:self-start ${stacked ? 'obj-stack' : ''}`} data-count={stacked ? Math.min(pubs.length, 3) : undefined}>
+    <div className="grid gap-x-6 gap-y-3 border-t border-slate-100 py-6 first:border-t-0 first:pt-1 md:grid-cols-[15rem_minmax(0,1fr)]">
+      <div className={`mr-3 mb-3 w-full max-w-[22rem] self-start md:max-w-none ${stacked ? 'obj-stack' : ''}`} data-count={stacked ? Math.min(pubs.length, 3) : undefined}>
         <Media src={theme.image} alt="" className="aspect-[4/3]" />
       </div>
-      <h4 className="text-[0.95rem] font-semibold leading-snug text-slate-900">{theme.title}</h4>
-      <p className="text-[13px] leading-relaxed text-slate-600">{theme.desc}</p>
-      <ul className="grid gap-2 border-t border-slate-100 pt-2.5 max-sm:col-start-2 sm:mt-0.5">
-        {pubs.map(pub => (
-          <li key={pub.id}>
-            <button
-              type="button"
-              onClick={() => onOpenPublication(pub.id)}
-              className="block w-full rounded-sm text-left text-[12.5px] leading-snug text-slate-600 transition-colors hover:text-accent-700 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent-600"
-            >
-              <span className="block font-mono text-[11px] text-accent-600">{pub.venue}</span>
-              <span>{pub.short || pub.title}</span>
-            </button>
-          </li>
-        ))}
-      </ul>
+      <div className="min-w-0 max-w-[62ch] space-y-3">
+        <h4 className="text-[1.03rem] font-semibold leading-snug text-slate-900">{theme.title}</h4>
+        <p className="text-[0.92rem] leading-relaxed text-slate-700">{theme.comment}</p>
+        <ul className="space-y-2.5 border-t border-slate-100 pt-3">
+          {pubs.map(({ id, note, pub }) => (
+            <li key={id}>
+              <button
+                type="button"
+                onClick={() => onOpenPublication(id)}
+                className="block w-full rounded-sm text-left text-sm leading-relaxed text-slate-600 transition-colors hover:text-accent-700 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent-600"
+              >
+                <span className="mr-2 font-mono text-[11px] text-accent-600">{pub.venue}</span>
+                <span>{note || pub.short || pub.title}</span>
+              </button>
+            </li>
+          ))}
+        </ul>
+      </div>
     </div>
   );
 };
@@ -69,7 +73,7 @@ export default function About({ onOpenPublication }) {
       </section>
 
       <Section icon={FlaskConical} id="themes-heading" title="Research Themes">
-        <div className="grid gap-6 sm:grid-cols-3">
+        <div>
           {themes.map((t, i) => <ThemeTile key={i} theme={t} onOpenPublication={onOpenPublication} />)}
         </div>
       </Section>

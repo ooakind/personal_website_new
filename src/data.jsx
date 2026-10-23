@@ -160,26 +160,36 @@ export const publications = [
   }
 ];
 
-// Research themes shown on About. `image` is the representative figure;
-// `publications` lists publication ids (any number) that belong to the theme.
+// Research themes shown on About. Each theme has an objective `title`, a personal
+// `comment` (the "why I care" that does not fit in a paper), a representative `image`,
+// and any number of `publications`, each a publication id plus a one-line `note`
+// describing that work from the theme's point of view.
 export const themes = [
   {
     title: "Simulating hyper-personalized social experiences",
-    desc: "Generating personalized analogies so people can feel what others feel.",
+    comment: "A social situation has one structure, but it never lands the same way on two people. I want AI that can rebuild an experience in the shape it would take for you, so you can feel what someone else felt, or meet a reaction as real as the person's own.",
     image: "/research_images/emosync.jpg",
-    publications: ["emosync-chi25", "emosync-interactivity25"]
+    publications: [
+      { id: "emosync-chi25", note: "EmoSync: a personalized analogy that lets you feel a microaggression the way its target did, as a route to affective empathy." },
+      { id: "emosync-interactivity25", note: "A hands-on EmoSync demo at CHI Interactivity. Popular Choice Honorable Mention (Top 5%)." }
+    ]
   },
   {
     title: "Personal AI agents & delegation",
-    desc: "Keeping the experience of the process when we hand tasks to agents.",
+    comment: "We hand more and more of our work to agentic AI. When the doing goes away, so do the insights and the growth that used to come with it. Can we bring those back without taking the work back?",
     image: "/research_images/agents-shoes.jpg",
-    publications: ["agents-shoes-uist26"]
+    publications: [
+      { id: "agents-shoes-uist26", note: "Step into My Agent’s Shoes: a playful augmentation that turns the agent’s task-execution process into an interactive narrative game you play through." }
+    ]
   },
   {
     title: "Personal assistants for real life",
-    desc: "Sleep plans that are actionable and negotiable in daily routines.",
+    comment: "Good advice is cheap; advice you can actually follow tomorrow is not. I’m drawn to assistants that plan around the messy constraints of a real day and negotiate with you, instead of lecturing you.",
     image: "/research_images/sleepguru.jpg",
-    publications: ["sleepguru-uist22", "sleepguru-demo-uist22"]
+    publications: [
+      { id: "sleepguru-uist22", note: "SleepGuru: a sleep planner that builds actionable, negotiable plans from your real calendar and activity traces." },
+      { id: "sleepguru-demo-uist22", note: "Demonstrating SleepGuru live at UIST 2022." }
+    ]
   }
 ];
 
